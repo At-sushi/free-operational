@@ -18,6 +18,7 @@ import Control.Monad.Trans.Free
 import Control.Operational.Class
 import Control.Operational.Instruction
 import Data.Functor.Coyoneda
+import Control.Monad.Codensity
 
 
 newtype ProgramT instr m a = 
@@ -25,7 +26,7 @@ newtype ProgramT instr m a =
              } deriving (Functor, Applicative, Monad, MonadTrans)
 
 instance Monad m => Operational instr (ProgramT instr m) where
-    singleton = ProgramT . liftF . liftInstr
+    singleton = ProgramT . lowerCodensity . liftF . liftInstr
 
 -- | Given an intepretation of @instr x@ as actions over a given monad
 -- transformer @t@ (transforming over an arbitrary monad @m@),

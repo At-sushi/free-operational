@@ -19,6 +19,7 @@ import Control.Monad.Free
 import Control.Operational.Class
 import Control.Operational.Instruction
 import Data.Functor.Coyoneda
+import Control.Monad.Codensity
 
 
 newtype Program instr a = 
@@ -27,7 +28,7 @@ newtype Program instr a =
             } deriving (Functor, Applicative, Monad)
 
 instance Operational instr (Program instr) where
-    singleton = Program . liftF . liftInstr
+    singleton = Program . lowerCodensity . liftF . liftInstr
 
 -- | Interpret a 'Program' by translating each instruction to a
 -- 'Monad' action.  Does not use 'view'.
